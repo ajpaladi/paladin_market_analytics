@@ -203,9 +203,9 @@ elif side_bar == 'Search':
 
     if st.button('Search'):
 
-        qoutes, news, lists, research = q.search(query=search_query)
-        st.dataframe(qoutes)
+        quotes, news, lists, research = q.search(query=search_query)
+        st.dataframe(quotes)
         st.dataframe(news)
-        st.dataframe(lists)
+        st.dataframe(lists) 
         st.dataframe(research)
 
