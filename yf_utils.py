@@ -10,7 +10,9 @@ import yfinance as yf
 class TickerAnalysis():
 
     def __init__(self):
-        pass
+
+        self.OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
+        self.client = ollama.Client(host=self.OLLAMA_BASE_URL)
 
     def llm(self, model='llama3.2', prompt=None):
 
