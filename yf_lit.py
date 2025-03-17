@@ -1,10 +1,11 @@
 import streamlit as st
 import pandas as pd
 import plotly_express as px
-from yf_utils import TickerAnalysis, SectorAnalysis, Query
+from yf_utils import TickerAnalysis, SectorAnalysis, Query, MarketAnalysis
 y = TickerAnalysis()
 s = SectorAnalysis()
 q = Query()
+m = MarketAnalysis()
 
 st.set_page_config(layout="wide")
 
@@ -24,7 +25,7 @@ st.markdown(
 )
 
 pages = ['Home', 'Ticker Analysis', 'Sector & Industry Analysis',
-         'Marker Analysis', 'Portfolio Analysis', 'Invest Divest', 'Search']
+         'Market Analysis', 'Portfolio Analysis', 'Invest Divest', 'Search']
 
 side_bar = st.sidebar.selectbox(
     'Select a Page',
@@ -159,6 +160,20 @@ elif side_bar == 'Sector & Industry Analysis':
         st.write('Top Industry Performing Companies')
         st.dataframe(top_ip_companies)
         
+elif side_bar == 'Market Analysis':
+
+    market_options = ['US', 'GB', 'ASIA', 'EUROPE', 'RATES', 'COMMODITIES', 'CURRENCIES', 'CRYPTOCURRENCIES']
+    market_selection = st.selectbox(label='Select Market', options=market_options)
+
+    if st.button('Analyze Market'):
+        
+        market_summary = m.market_summary(market_name=market_selection)
+        market_status = m.market_status(market_name=market_selection)
+        st.write('Market Summary')
+        st.dataframe(market_summary)
+        st.write('Market Status')
+        st.dataframe(market_status)
+
 elif side_bar == 'Portfolio Analysis':
 
     st.title('Portfolio Analysis')
@@ -210,8 +225,12 @@ elif side_bar == 'Search':
     if st.button('Search'):
 
         quotes, news, lists, research = q.search(query=search_query)
+        st.write('Quotes')
         st.dataframe(quotes)
+        st.write('Latest News')
         st.dataframe(news)
+        st.write('Yahoo Finance Lists')
         st.dataframe(lists) 
+        st.write('Research Reports')
         st.dataframe(research)
 

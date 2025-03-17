@@ -488,14 +488,17 @@ class MarketAnalysis():
 
         market = yf.Market(market=market_name)
         summary = market.summary
-        return summary
+        market_summary = pd.json_normalize(summary)
+        market_summary = market_summary.transpose()
+        return market_summary
 
     def market_status(self, market_name=None):
 
         market = yf.Market(market=market_name)
-        status = market._status
-        return status
-
+        status = market.status
+        market_status = pd.json_normalize(status)
+        market_status = market_status.transpose()
+        return market_status
 
 class Query():
 
