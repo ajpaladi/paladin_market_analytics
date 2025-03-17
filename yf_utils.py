@@ -14,7 +14,7 @@ class TickerAnalysis():
 
     def llm(self, model='llama3.2', prompt=None):
 
-        OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://172.203.190.242:11434")
+        OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
         client = ollama.Client(host=OLLAMA_BASE_URL)
         stream = client.chat(
