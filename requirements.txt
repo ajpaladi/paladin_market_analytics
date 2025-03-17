@@ -1,0 +1,6 @@
+ollama==0.4.7
+pandas==2.2.3
+plotly==6.0.0
+plotly_express==0.4.1
+streamlit==1.43.2
+yfinance==0.2.54
