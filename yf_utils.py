@@ -29,6 +29,37 @@ class TickerAnalysis():
             text = chunk['message']['content']
             yield text  # Stream each chunk instead of returning only the first one
 
+    def landing(self):
+
+        us_tickers = ['^DJI', '^GSPC', '^IXIC', '^RUT', 'CL=F', 'GC=F']
+        eu_tickers = ['^FTSE', '^FCHI', '^GDAXI', '^N100', 'EURUSD=X', 'GBP=X']
+        as_tickers = ['000001.SS', '^N225', '^HSI', '^AXJO', '^ADOW', 'JPY=X']
+        rates = ['^IRX', '^FVX', '^TNX', '^TYX', '2YY=F', 'ZN=F']
+
+        us_markets = yf.download(tickers=us_tickers, period='6mo')
+        eu_markets = yf.download(tickers=eu_tickers, period='6mo')
+        as_markets = yf.download(tickers=as_tickers, period='6mo')
+        rates = yf.download(tickers=rates, period='6mo')
+
+        us_markets = us_markets.reset_index()
+        us_markets.columns = ['_'.join(col).strip() if isinstance(col, tuple) else col for col in us_markets.columns]
+
+        eu_markets = eu_markets.reset_index()
+        eu_markets.columns = ['_'.join(col).strip() if isinstance(col, tuple) else col for col in eu_markets.columns]
+
+        as_markets = as_markets.reset_index()
+        as_markets.columns = ['_'.join(col).strip() if isinstance(col, tuple) else col for col in as_markets.columns]
+
+        rates = rates.reset_index()
+        rates.columns = ['_'.join(col).strip() if isinstance(col, tuple) else col for col in rates.columns]
+
+        fig_1 = px.line(us_markets, x='Date_', y = ['Close_^DJI', 'Close_^GSPC', 'Close_^IXIC', 'Close_^RUT', 'Close_CL=F', 'Close_GC=F'], markers=True, title='US Indicies')
+        fig_2 = px.line(eu_markets, x='Date_', y = ['Close_^FTSE', 'Close_^FCHI', 'Close_^GDAXI', 'Close_^N100', 'Close_EURUSD=X', 'Close_GBP=X'], markers=True, title='EU Indicies')
+        fig_3 = px.line(as_markets, x='Date_', y = ['Close_000001.SS', 'Close_^N225', 'Close_^HSI', 'Close_^AXJO', 'Close_^ADOW', 'Close_JPY=X'], markers=True, title='Asian Indicies')
+        fig_4 = px.line(rates, x='Date_', y=['Close_^IRX', 'Close_^FVX', 'Close_^TNX', 'Close_^TYX', 'Close_2YY=F', 'Close_ZN=F'], markers=True, title='Rates')
+
+        return fig_1, fig_2, fig_3, fig_4
+    
     def ticker_history(self, symbol=None, timeframe='1y'):
 
         data = yf.Ticker(symbol)
