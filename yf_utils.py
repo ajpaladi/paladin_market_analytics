@@ -16,6 +16,12 @@ class TickerAnalysis():
 
     def llm(self, model='llama3.2', prompt=None):
 
+        MAX_TOKENS = 2000  # Keep a buffer under 2048
+
+        # Truncate prompt if needed
+        if len(prompt.split()) > MAX_TOKENS:
+            prompt = ' '.join(prompt.split()[:MAX_TOKENS])
+
         stream = self.client.chat(
             model=model,
             messages=[
