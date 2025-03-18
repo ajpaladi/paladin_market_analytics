@@ -6,6 +6,7 @@ import ollama
 from ollama import chat
 import os
 import yfinance as yf
+import asyncio
 
 class TickerAnalysis():
 
@@ -14,25 +15,24 @@ class TickerAnalysis():
         self.OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "https://expert-invention-5rrr7jgjq97cv7qj-11434.app.github.dev")
         self.client = ollama.Client(host=self.OLLAMA_BASE_URL)
 
-    def llm(self, model='llama3.2', prompt=None):
+    async def llm(self, model='llama3.2', prompt=None):
+        MAX_TOKENS = 2000
 
-        MAX_TOKENS = 2000  # Keep a buffer under 2048
-
-        # Truncate prompt if needed
+        # Truncate the prompt if needed
         if len(prompt.split()) > MAX_TOKENS:
             prompt = ' '.join(prompt.split()[:MAX_TOKENS])
 
         try:
-            stream = self.client.chat(
+            stream = await self.client.chat(
                 model=model,
                 messages=[{'role': 'user', 'content': f'{prompt}'}],
                 stream=True
             )
 
-            for chunk in stream:
+            async for chunk in stream:
                 text = chunk['message']['content']
-                yield text  # Stream each chunk instead of returning only the first one
-        
+                yield text  # Yield tokens as they arrive
+
         except ollama._types.ResponseError as e:
             print(f"❌ Ollama API Error: {e}")
             yield "⚠️ Error: Ollama failed to respond."
