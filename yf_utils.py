@@ -22,17 +22,20 @@ class TickerAnalysis():
         if len(prompt.split()) > MAX_TOKENS:
             prompt = ' '.join(prompt.split()[:MAX_TOKENS])
 
-        stream = self.client.chat(
-            model=model,
-            messages=[
-                {'role': 'user',
-                'content': f'{prompt}'}],
-            stream=True
-        )
+        try:
+            stream = self.client.chat(
+                model=model,
+                messages=[{'role': 'user', 'content': f'{prompt}'}],
+                stream=True
+            )
 
-        for chunk in stream:
-            text = chunk['message']['content']
-            yield text  # Stream each chunk instead of returning only the first one
+            for chunk in stream:
+                text = chunk['message']['content']
+                yield text  # Stream each chunk instead of returning only the first one
+        
+        except ollama._types.ResponseError as e:
+            print(f"❌ Ollama API Error: {e}")
+            yield "⚠️ Error: Ollama failed to respond."
 
     def landing(self):
 
