@@ -119,8 +119,8 @@ class TickerAnalysis():
         hist['EWMA'] = hist['Close'].ewm(span=200, adjust=False).mean()
 
         # Detect Buy/Sell Signals
-        hist['Buy Signal'] = (hist['Close'] > hist['Rolling']) & (hist['Close'].shift(1) <= hist['Rolling'])
-        hist['Sell Signal'] = (hist['Close'] < hist['Rolling']) & (hist['Close'].shift(1) >= hist['Rolling'])
+        hist['Buy Signal'] = (hist['Close'] > hist['EWMA']) & (hist['Close'].shift(1) <= hist['EWMA'])
+        hist['Sell Signal'] = (hist['Close'] < hist['EWMA']) & (hist['Close'].shift(1) >= hist['EWMA'])
 
         # Plot the Moving Averages & Signals
         fig = px.line(hist, x='Date', y=['Close', 'Rolling', 'EWMA'], title="Long Term Strategy: Moving Averages")
@@ -142,8 +142,8 @@ class TickerAnalysis():
         hist['EWMA'] = hist['Close'].ewm(span=15, adjust=False).mean()
 
         # Detect Buy/Sell Signals
-        hist['Buy Signal'] = (hist['Close'] > hist['Rolling']) & (hist['Close'].shift(1) <= hist['Rolling'])
-        hist['Sell Signal'] = (hist['Close'] < hist['Rolling']) & (hist['Close'].shift(1) >= hist['Rolling'])
+        hist['Buy Signal'] = (hist['Close'] > hist['EWMA']) & (hist['Close'].shift(1) <= hist['EWMA'])
+        hist['Sell Signal'] = (hist['Close'] < hist['EWMA']) & (hist['Close'].shift(1) >= hist['EWMA'])
 
         # Plot Moving Averages & Signals
         fig = px.line(hist, x='Date', y=['Close', 'Rolling', 'EWMA'], title="Short Term Strategy: Moving Averages")
