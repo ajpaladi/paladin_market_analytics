@@ -36,12 +36,12 @@ if side_bar == 'Home':
 
     st.title('Welcome to Paladin Market Analytics')
     
-    fig1, fig2, fig3, fig4 = y.landing()
+    # fig1, fig2, fig3, fig4 = y.landing()
 
-    st.plotly_chart(fig1)
-    st.plotly_chart(fig2)
-    st.plotly_chart(fig3)
-    st.plotly_chart(fig4)
+    # st.plotly_chart(fig1)
+    # st.plotly_chart(fig2)
+    # st.plotly_chart(fig3)
+    # st.plotly_chart(fig4)
 
 elif side_bar == 'Ticker Analysis':
     
